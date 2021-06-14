@@ -36,12 +36,6 @@ class WordDaoTest {
 
     @Test
     @Throws(Exception::class)
-    fun isWordListEmpty(){
-        assertEquals(0,mDatabase.wordDao.loadAll().size)
-    }
-
-    @Test
-    @Throws(Exception::class)
     fun insertWord() {
         val word: Word = TestUtil.createWord(7)
         val insertedWord = mDatabase.wordDao.insert(word)
@@ -52,10 +46,10 @@ class WordDaoTest {
     @Throws(Exception::class)
     fun insertWordAndLoadByTitle() {
         val word: Word = TestUtil.createWord(1).apply {
-            setName("Art")
+            text = "Cat"
         }
         mDatabase.wordDao.insert(word)
-        val wordLoadedByTitle = mDatabase.wordDao.getWordByTitle("Art")
+        val wordLoadedByTitle = mDatabase.wordDao.getWordByText("Cat")
         assertThat(wordLoadedByTitle, equalTo(word))
     }
 
@@ -80,14 +74,5 @@ class WordDaoTest {
         val loadOneByWordId = mDatabase.wordDao.getWord(8)
         assertNull(loadOneByWordId)
     }
-
-    @Test
-    @Throws(Exception::class)
-    fun deleteAllWords(){
-        mDatabase.wordDao.deleteAll()
-        val loadedAllWords = mDatabase.wordDao.loadAll()
-        assert(loadedAllWords.isEmpty())
-    }
-
 
 }
