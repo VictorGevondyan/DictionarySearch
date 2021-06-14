@@ -11,25 +11,25 @@ import io.reactivex.Single
 @Dao
 interface WordDao {
 
-//    @Insert(onConflict = OnConflictStrategy.REPLACE)
-//    fun insert(word: Word): Long
-//
-//    @Query("SELECT * FROM Word")
-//    fun loadAll(): MutableList<Word>
-//
-//    @Delete
-//    fun delete(word: Word)
-//
-//    @Query("DELETE FROM Word")
-//    fun deleteAll()
-//
-//    @Query("SELECT * FROM Word where id = :meaningId")
-//    fun getWordMeaning(meaningId: Long): Single<Word.Meaning>
-//
-//    @Query("SELECT * FROM Word where text = :wordTitle")
-//    fun loadOneByWordText(wordTitle: String): Word?
-//
-//    @Update
-//    fun update(word: Word)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(word: Word): Long
+
+    @Query("SELECT * FROM Word")
+    fun loadAll(): Single<MutableList<Word>?>
+
+    @Delete
+    fun delete(word: Word)
+
+    @Query("DELETE FROM Word")
+    fun deleteAll()
+
+    @Query("SELECT * FROM Word where id = :id")
+    fun getWord(id: Long): Single<Word?>
+
+    @Query("SELECT * FROM Word where text = :wordTitle")
+    fun getWordByTitle(wordTitle: String): Single<Word?>
+
+    @Update
+    fun update(word: Word)
 
 }

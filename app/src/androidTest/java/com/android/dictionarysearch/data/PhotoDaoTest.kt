@@ -55,7 +55,7 @@ class WordDaoTest {
             setName("Art")
         }
         mDatabase.wordDao.insert(word)
-        val wordLoadedByTitle = mDatabase.wordDao.loadOneByWordText("Art")
+        val wordLoadedByTitle = mDatabase.wordDao.getWordByTitle("Art")
         assertThat(wordLoadedByTitle, equalTo(word))
     }
 
@@ -77,7 +77,7 @@ class WordDaoTest {
         val word = TestUtil.createWord(8)
         mDatabase.wordDao.delete(word)
 
-        val loadOneByWordId = mDatabase.wordDao.getWordMeaning(8)
+        val loadOneByWordId = mDatabase.wordDao.getWord(8)
         assertNull(loadOneByWordId)
     }
 

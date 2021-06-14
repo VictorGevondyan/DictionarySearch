@@ -11,7 +11,7 @@ import com.android.dictionarysearch.R
 import com.android.dictionarysearch.databinding.FragmentWordDetailBinding
 import com.android.dictionarysearch.domain.model.Word
 import com.android.dictionarysearch.presentation.base.BaseFragment
-import com.android.dictionarysearch.presentation.loadImageFull
+import com.android.dictionarysearch.presentation.loadImage
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -31,8 +31,8 @@ class WordDetailFragment : BaseFragment(), OnWorlDetailCallback {
 
         fragmentWordDetailBinding.wordDetailViewModel = viewModel
 
-        val wordMeaning = arguments?.getSerializable(KEY_WORD) as Word
-        viewModel.setCurrentWord(wordMeaning)
+        val word = arguments?.getSerializable(KEY_WORD) as Word
+        viewModel.setCurrentWord(word)
 
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
@@ -57,9 +57,10 @@ class WordDetailFragment : BaseFragment(), OnWorlDetailCallback {
 
     override fun bindLiveData() {
 
-        viewModel.wordMeaningData.observe(viewLifecycleOwner, {
-            fragmentWordDetailBinding.wordTv.text = it?.translation?.translationText
-            fragmentWordDetailBinding.wordPictureIv.loadImageFull(it?.imageUrl)
+        viewModel.word.observe(viewLifecycleOwner, {
+            val meaning = it.meanings[0]
+            fragmentWordDetailBinding.wordTv.text = meaning.translation.translationText
+            fragmentWordDetailBinding.wordPictureIv.loadImage(meaning.imageUrl)
         })
 
     }
