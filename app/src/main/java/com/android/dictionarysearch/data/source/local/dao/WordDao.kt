@@ -27,7 +27,7 @@ interface WordDao {
     fun getWord(id: Long): Single<Word?>
 
     @Query("SELECT * FROM Word where text = :wordTitle")
-    fun getWordByTitle(wordTitle: String): Single<Word?>
+    fun getWordByText(wordTitle: String): Single<Word?>
 
     @Update
     fun update(word: Word)
