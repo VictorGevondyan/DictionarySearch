@@ -1,5 +1,6 @@
 package com.android.dictionarysearch.presentation.word_detail
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.android.dictionarysearch.domain.model.Word
@@ -13,13 +14,11 @@ import javax.inject.Inject
 @HiltViewModel
 class WordDetailViewModel @Inject constructor() : ViewModel() {
 
-    val wordMeaningData = MutableLiveData<Word.Meaning>()
-    val isLoad = MutableLiveData<Boolean>()
-
-    var word: Word? = null
+    private val _word = MutableLiveData<Word>()
+    val word: LiveData<Word> = _word
 
     fun setCurrentWord(word: Word) {
-        this.word = word
+        _word.value = word
     }
 
 }
