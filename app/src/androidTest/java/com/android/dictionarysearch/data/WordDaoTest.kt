@@ -1,18 +1,16 @@
 package com.android.dictionarysearch.data
 
+
 import androidx.room.Room
 import androidx.test.InstrumentationRegistry
 import androidx.test.runner.AndroidJUnit4
 import com.android.dictionarysearch.data.source.local.AppDatabase
 import com.android.dictionarysearch.domain.model.Word
 import com.android.dictionarysearch.util.TestUtil
-import org.hamcrest.CoreMatchers.equalTo
 import org.junit.After
-import org.junit.Assert.*
+import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Test
-
-
 import org.junit.runner.RunWith
 import java.io.IOException
 
@@ -24,7 +22,10 @@ class WordDaoTest {
 
     @Before
     fun createDb() {
-        mDatabase = Room.inMemoryDatabaseBuilder(InstrumentationRegistry.getTargetContext(), AppDatabase::class.java)
+        mDatabase = Room.inMemoryDatabaseBuilder(
+            InstrumentationRegistry.getTargetContext(),
+            AppDatabase::class.java
+        )
             .build()
     }
 
@@ -45,34 +46,37 @@ class WordDaoTest {
     @Test
     @Throws(Exception::class)
     fun insertWordAndLoadByTitle() {
+
         val word: Word = TestUtil.createWord(1).apply {
             text = "Cat"
         }
         mDatabase.wordDao.insert(word)
-        val wordLoadedByTitle = mDatabase.wordDao.getWordByText("Cat")
-        assertThat(wordLoadedByTitle, equalTo(word))
+
+        val wordLoadedByTitleTestSingle = mDatabase.wordDao.getWordByText("Cat").test()
+        wordLoadedByTitleTestSingle.assertValue(word)
+
     }
 
     @Test
     @Throws(Exception::class)
-    fun retrievesWords(){
+    fun retrievesWords() {
         val wordList = TestUtil.makeWordList(5)
         wordList.forEach {
             mDatabase.wordDao.insert(it)
         }
 
-        val loadedWords = mDatabase.wordDao.loadAll()
-        assertEquals(wordList,loadedWords)
+        val loadedWordsTestSingle = mDatabase.wordDao.loadAll().test()
+        loadedWordsTestSingle.assertValue(wordList)
     }
 
     @Test
     @Throws(Exception::class)
-    fun deleteWord(){
+    fun deleteWord() {
         val word = TestUtil.createWord(8)
         mDatabase.wordDao.delete(word)
 
-        val loadOneByWordId = mDatabase.wordDao.getWord(8)
-        assertNull(loadOneByWordId)
+        val loadOneByWordIdTestSingle = mDatabase.wordDao.getWord(8).test()
+        loadOneByWordIdTestSingle.assertNoValues()
     }
 
 }

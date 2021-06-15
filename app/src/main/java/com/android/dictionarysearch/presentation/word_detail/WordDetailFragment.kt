@@ -42,7 +42,7 @@ class WordDetailFragment : BaseFragment(), OnWorlDetailCallback {
 
     companion object {
 
-        private const val KEY_WORD = "word"
+        const val KEY_WORD = "word"
         val FRAGMENT_NAME = WordDetailFragment::class.java.name
 
         @JvmStatic
