@@ -13,8 +13,8 @@ abstract class ObservableUseCase<T, in Params> : UseCase() {
     abstract fun buildUseCaseObservable(params: Params): Observable<T>
 
     fun execute(
-        onSuccess: ((t: T) -> Unit),
-        onError: ((t: Throwable) -> Unit),
+        onSuccess: (t: T) -> Unit,
+        onError: (t: Throwable) -> Unit,
         onFinished: () -> Unit = {},
         params: Params
     ) {
@@ -29,4 +29,5 @@ abstract class ObservableUseCase<T, in Params> : UseCase() {
             addDisposable(it)
         }
     }
+
 }
