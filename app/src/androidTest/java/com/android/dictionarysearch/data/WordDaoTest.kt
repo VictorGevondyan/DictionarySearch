@@ -2,8 +2,8 @@ package com.android.dictionarysearch.data
 
 
 import androidx.room.Room
-import androidx.test.InstrumentationRegistry
-import androidx.test.runner.AndroidJUnit4
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import com.android.dictionarysearch.data.source.local.AppDatabase
 import com.android.dictionarysearch.domain.model.Word
 import com.android.dictionarysearch.util.TestUtil
@@ -23,7 +23,7 @@ class WordDaoTest {
     @Before
     fun createDb() {
         mDatabase = Room.inMemoryDatabaseBuilder(
-            InstrumentationRegistry.getTargetContext(),
+            InstrumentationRegistry.getInstrumentation().targetContext,
             AppDatabase::class.java
         )
             .build()
