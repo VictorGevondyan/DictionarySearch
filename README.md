@@ -28,9 +28,7 @@ At a glance:
 - Were Written test to cover one simple case.
 - Supported orientation change.
    
-### Scenario
-
-Third party libraries:
+### Third-party libraries
 
 Retrofit2, OkHttp - for network calls.
 RxJava - for reactive programming, multithreading.
