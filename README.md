@@ -30,11 +30,11 @@ At a glance:
    
 ### Third-party libraries
 
-Retrofit2, OkHttp - for network calls.
-RxJava - for reactive programming, multithreading.
-Room - for persistent storage.
-Hilt - for Dependency Injection.
-Glide - for effective image loading and displaying.
-Multidex - for dealing with app big size.
-Espresso - for Instrumented Tests.
-Robolectric - for unit tests.
+- Retrofit2, OkHttp - for network calls.
+- RxJava - for reactive programming, multithreading.
+- Room - for persistent storage.
+- Hilt - for Dependency Injection.
+- Glide - for effective image loading and displaying.
+- Multidex - for dealing with app big size.
+- Espresso - for Instrumented Tests.
+- Robolectric - for unit tests.
