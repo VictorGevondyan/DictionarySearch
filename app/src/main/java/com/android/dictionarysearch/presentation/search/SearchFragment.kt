@@ -41,11 +41,6 @@ class SearchFragment : BaseFragment(), OnSearchAdapterListener {
             )
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        searchResultsAdapter = SearchResultsAdapter(this)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -95,11 +90,7 @@ class SearchFragment : BaseFragment(), OnSearchAdapterListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        fragmentSearchBinding.searchRecyclerView.adapter = searchResultsAdapter
-        fragmentSearchBinding.searchRecyclerView.layoutManager =
-            LinearLayoutManager(requireContext())
-        val decoration = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
-        fragmentSearchBinding.searchRecyclerView.addItemDecoration(decoration)
+        setupRecyclerView()
     }
 
     override fun onDetach() {
@@ -115,23 +106,34 @@ class SearchFragment : BaseFragment(), OnSearchAdapterListener {
     override fun bindLiveData() {
 
         viewModel.isLoading.observe(viewLifecycleOwner, {
-            it?.let { isLoading ->
+            it.getIfNotHandled()?.let { isLoading ->
                 fragmentSearchBinding.wordsProgressBar.visibility =
                     if (isLoading) View.VISIBLE else View.GONE
             }
         })
 
-        viewModel.wordsReceivedLiveData.observe(viewLifecycleOwner, {
-            it?.let {
-                searchResultsAdapter?.addData(it)
+        viewModel.wordsList.observe(viewLifecycleOwner, {
+            it.getIfNotHandled()?.let { wordsList ->
+                searchResultsAdapter?.addData(wordsList)
             }
         })
 
     }
 
+    private fun setupRecyclerView() {
+
+        searchResultsAdapter = SearchResultsAdapter(this)
+        fragmentSearchBinding.searchRecyclerView.adapter = searchResultsAdapter
+        fragmentSearchBinding.searchRecyclerView.layoutManager =
+            LinearLayoutManager(requireContext())
+        val decoration = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
+        fragmentSearchBinding.searchRecyclerView.addItemDecoration(decoration)
+
+    }
+
     companion object {
 
-        val FRAGMENT_NAME = SearchFragment::class.java.name
+        val FRAGMENT_NAME: String = SearchFragment::class.java.name
 
         @JvmStatic
         fun newInstance() =
@@ -139,6 +141,7 @@ class SearchFragment : BaseFragment(), OnSearchAdapterListener {
                 arguments = Bundle().apply {
                 }
             }
+
     }
 
 }

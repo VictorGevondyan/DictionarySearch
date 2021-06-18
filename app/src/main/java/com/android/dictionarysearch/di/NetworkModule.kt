@@ -1,11 +1,7 @@
 package com.android.dictionarysearch.di
 
 
-import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkInfo
 import com.android.dictionarysearch.data.repository.WordRepositoryImp
-import com.android.dictionarysearch.data.source.local.AppDatabase
 import com.android.dictionarysearch.data.source.remote.RetrofitService
 import com.android.dictionarysearch.domain.repository.WordRepository
 import com.android.dictionarysearch.util.Constants.BASE_URL
@@ -13,9 +9,7 @@ import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -45,41 +39,19 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun providesOkHttpClient(
-        @ApplicationContext context: Context
-    ): OkHttpClient {
-        val cacheSize = (5 * 1024 * 1024).toLong()
-        val mCache = Cache(context.cacheDir, cacheSize)
+    fun providesOkHttpClient(): OkHttpClient {
         val interceptor = HttpLoggingInterceptor()
         interceptor.level = HttpLoggingInterceptor.Level.BODY
         val client = OkHttpClient.Builder()
-//            .cache(mCache) // make your app offline-friendly without a database!
-//            .connectTimeout(60, TimeUnit.SECONDS)
-//            .writeTimeout(60, TimeUnit.SECONDS)
-//            .readTimeout(60, TimeUnit.SECONDS)
+            .connectTimeout(REQUEST_TIMEOUT, TimeUnit.SECONDS)
+            .writeTimeout(REQUEST_TIMEOUT, TimeUnit.SECONDS)
+            .readTimeout(REQUEST_TIMEOUT, TimeUnit.SECONDS)
             .addNetworkInterceptor(interceptor)
             .addInterceptor { chain ->
-                var requestBuilder = chain.request()
+                val request = chain.request()
                     .newBuilder()
-                /* If there is Internet, get the cache that was stored 5 seconds ago.
-                 * If the cache is older than 5 seconds, then discard it,
-                 * and indicate an error in fetching the response.
-                 * The 'max-age' attribute is responsible for this behavior.
-                 */
-//                requestBuilder =
-//                    if (true) requestBuilder //make default to true till i figure out how to inject network status
-//                        .header("Cache-Control", "public, max-age=" + 5)
-                    /*If there is no Internet, get the cache that was stored 7 days ago.
-                     * If the cache is older than 7 days, then discard it,
-                     * and indicate an error in fetching the response.
-                     * The 'max-stale' attribute is responsible for this behavior.
-                     * The 'only-if-cached' attribute indicates to not retrieve new data; fetch the cache only instead.
-                     */
-//                    else requestBuilder.header(
-//                        "Cache-Control",
-//                        "public, only-if-cached, max-stale=" + 60 * 60 * 24 * 7
-//                    )
-                chain.proceed(requestBuilder.build())
+                    .build()
+                chain.proceed(request)
             }
         return client.build()
     }
@@ -102,15 +74,6 @@ class NetworkModule {
         return RxJava2CallAdapterFactory.create()
     }
 
-    @Provides
-    @Singleton
-    fun provideIsNetworkAvailable(@ApplicationContext context: Context): Boolean {
-        val connectivityManager =
-            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val activeNetwork: NetworkInfo? = connectivityManager.activeNetworkInfo
-        return activeNetwork != null && activeNetwork.isConnected
-    }
-
     @Singleton
     @Provides
     fun provideService(retrofit: Retrofit): RetrofitService {
@@ -120,10 +83,13 @@ class NetworkModule {
     @Singleton
     @Provides
     fun provideWordRepository(
-        appDatabase: AppDatabase,
         retrofitService: RetrofitService
     ): WordRepository {
-        return WordRepositoryImp(appDatabase, retrofitService)
+        return WordRepositoryImp(retrofitService)
+    }
+
+    companion object {
+        private const val REQUEST_TIMEOUT = 120L
     }
 
 }

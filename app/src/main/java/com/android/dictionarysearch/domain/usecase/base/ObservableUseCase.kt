@@ -18,6 +18,7 @@ abstract class ObservableUseCase<T, in Params> : UseCase() {
         onFinished: () -> Unit = {},
         params: Params
     ) {
+
         disposeLast()
         lastDisposable = buildUseCaseObservable(params)
             .subscribeOn(Schedulers.io())
@@ -28,6 +29,10 @@ abstract class ObservableUseCase<T, in Params> : UseCase() {
         lastDisposable?.let {
             addDisposable(it)
         }
+
     }
+
+    // The class to pass in "Params", when there are no "Params".
+    class None
 
 }

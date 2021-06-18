@@ -38,34 +38,4 @@ class RoomConverters {
 
     }
 
-    @TypeConverter
-    fun convertTranslation(translation: Word.Meaning.Translation?): String? {
-
-        return if (translation == null) {
-            null
-        } else {
-            Gson().toJson(translation)
-        }
-
-    }
-
-    @TypeConverter
-    fun toTranslation(string: String?): Word.Meaning.Translation? {
-
-        if (string == null) {
-            return null
-        }
-
-        val gson = Gson()
-
-        val type =
-            object : TypeToken<Word.Meaning.Translation?>() {}.type
-
-        return gson.fromJson<Word.Meaning.Translation?>(
-            string,
-            type
-        )
-
-    }
-
 }

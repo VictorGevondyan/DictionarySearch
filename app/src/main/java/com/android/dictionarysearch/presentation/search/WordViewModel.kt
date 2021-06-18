@@ -9,10 +9,10 @@ import com.android.dictionarysearch.domain.model.Word
  * */
 class WordViewModel(word: Word) {
 
-    val wordData = MutableLiveData<Word>()
+    val word = MutableLiveData<Word>()
 
     init {
-        wordData.value = word
+        this.word.value = word
     }
 
 }

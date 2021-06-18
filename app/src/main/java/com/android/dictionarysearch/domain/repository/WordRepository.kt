@@ -7,11 +7,7 @@ import io.reactivex.Single
 
 /**
  * To make an interaction between [WordRepositoryImp] & [GetWordsUseCase]
- * */
+ */
 interface WordRepository {
-
     fun getWords(searchQuery: String): Observable<List<Word>>
-
-//    fun getWordMeaning(wordMeaningId: Long?): Observable<Word.Meaning>
-
 }

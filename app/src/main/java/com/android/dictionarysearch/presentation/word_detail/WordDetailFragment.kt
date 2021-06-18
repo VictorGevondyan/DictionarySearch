@@ -15,7 +15,7 @@ import com.android.dictionarysearch.presentation.loadImage
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class WordDetailFragment : BaseFragment(), OnWorlDetailCallback {
+class WordDetailFragment : BaseFragment() {
 
     private lateinit var fragmentWordDetailBinding: FragmentWordDetailBinding
     private val viewModel: WordDetailViewModel by viewModels()
@@ -40,10 +40,22 @@ class WordDetailFragment : BaseFragment(), OnWorlDetailCallback {
 
     }
 
+    override fun bindLiveData() {
+
+        viewModel.word.observe(viewLifecycleOwner, {
+
+            val meaning = it.meanings[0]
+            fragmentWordDetailBinding.wordTv.text = meaning.translation.translationText
+            fragmentWordDetailBinding.wordPictureIv.loadImage(meaning.imageUrl)
+
+        })
+
+    }
+
     companion object {
 
         const val KEY_WORD = "word"
-        val FRAGMENT_NAME = WordDetailFragment::class.java.name
+        val FRAGMENT_NAME: String = WordDetailFragment::class.java.name
 
         @JvmStatic
         fun newInstance(word: Word) =
@@ -52,16 +64,6 @@ class WordDetailFragment : BaseFragment(), OnWorlDetailCallback {
                     putSerializable(KEY_WORD, word)
                 }
             }
-
-    }
-
-    override fun bindLiveData() {
-
-        viewModel.word.observe(viewLifecycleOwner, {
-            val meaning = it.meanings[0]
-            fragmentWordDetailBinding.wordTv.text = meaning.translation.translationText
-            fragmentWordDetailBinding.wordPictureIv.loadImage(meaning.imageUrl)
-        })
 
     }
 

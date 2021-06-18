@@ -9,11 +9,9 @@ import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-
 /**
- * An interactor that calls the actual implementation of [WordViewModel](which is injected by DI)
- * it handles the response that returns data &
- * contains a list of actions, event steps
+ * This class is an implementation of {@link ObservableUseCase} that represents a use case for
+ * retrieving a collection of all {@link Word}, defined by search.
  */
 class GetWordsUseCase @Inject constructor(private val repository: WordRepository) :
     ObservableUseCase<List<Word>, GetWordsUseCase.GetWordsParams>() {

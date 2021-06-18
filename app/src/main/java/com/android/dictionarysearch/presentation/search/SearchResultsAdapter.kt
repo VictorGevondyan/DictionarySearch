@@ -23,7 +23,10 @@ class SearchResultsAdapter(val searchWordClickListener: OnSearchAdapterListener)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WordViewHolder {
 
         val holderWordBinding = DataBindingUtil.inflate<ViewDataBinding>(
-            LayoutInflater.from(parent.context), R.layout.holder_word, parent, false
+            LayoutInflater.from(parent.context),
+            R.layout.holder_word,
+            parent,
+            false
         )
         return WordViewHolder(holderWordBinding)
 
@@ -47,7 +50,6 @@ class SearchResultsAdapter(val searchWordClickListener: OnSearchAdapterListener)
         notifyDataSetChanged()
     }
 
-    // TODO: Think about replacing inner
     inner class WordViewHolder(private val dataBinding: ViewDataBinding) :
         RecyclerView.ViewHolder(dataBinding.root) {
 

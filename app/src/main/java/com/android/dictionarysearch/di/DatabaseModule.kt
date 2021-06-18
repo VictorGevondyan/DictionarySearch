@@ -1,11 +1,11 @@
 package com.android.dictionarysearch.di
 
-import dagger.Provides
-import androidx.room.Room
 import android.app.Application
+import androidx.room.Room
 import com.android.dictionarysearch.data.source.local.AppDatabase
 import com.android.dictionarysearch.data.source.local.dao.WordDao
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
@@ -29,4 +29,5 @@ class DatabaseModule {
     fun provideWordDao(appDatabase: AppDatabase): WordDao {
         return appDatabase.wordDao
     }
+
 }

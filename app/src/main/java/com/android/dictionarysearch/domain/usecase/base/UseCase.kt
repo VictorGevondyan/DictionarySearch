@@ -13,11 +13,13 @@ abstract class UseCase {
     private val compositeDisposable = CompositeDisposable()
 
     protected fun disposeLast() {
+
         lastDisposable?.let {
             if (!it.isDisposed) {
                 it.dispose()
             }
         }
+
     }
 
     protected fun addDisposable(disposable: Disposable) {
@@ -27,7 +29,5 @@ abstract class UseCase {
     fun dispose() {
         compositeDisposable.clear()
     }
-
-    class None
 
 }
