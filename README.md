@@ -28,3 +28,15 @@ At a glance:
 - Were Written test to cover one simple case.
 - Supported orientation change.
    
+### Scenario
+
+Third party libraries:
+
+Retrofit2, OkHttp - for network calls.
+RxJava - for reactive programming, multithreading.
+Room - for persistent storage.
+Hilt - for Dependency Injection.
+Glide - for effective image loading and displaying.
+Multidex - for dealing with app big size.
+Espresso - for Instrumented Tests.
+Robolectric - for unit tests.
