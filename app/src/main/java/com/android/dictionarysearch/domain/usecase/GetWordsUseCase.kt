@@ -21,8 +21,10 @@ class GetWordsUseCase @Inject constructor(private val repository: WordRepository
         return params.searchSubject.debounce(300, TimeUnit.MILLISECONDS)
             .filter { queryText -> queryText.length > 1 }
             .distinctUntilChanged()
-            .switchMap { queryText -> repository.getWords(queryText) }
-            .observeOn(Schedulers.io())
+            .switchMap { queryText ->
+                repository.getWords(queryText)
+                    .subscribeOn(Schedulers.io())
+            }
 
     }
 
